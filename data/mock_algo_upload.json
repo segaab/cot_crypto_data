@@ -1,0 +1,160 @@
+[
+  {
+  "display_name": "Bitcoin",
+  "instrument_name": "BTCUSDT",
+  "market_and_exchange_names": "BITCOIN - CHICAGO MERCANTILE EXCHANGE",
+  "asset_type": "crypto",
+  "exchange": "binance",
+  "searchable_terms": [
+    "BTC",
+    "Bitcoin",
+    "BTCUSDT",
+    "Crypto"
+  ],
+  "latest_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-24T00:00:00.000",
+    "comm_positions_long_all": "2263",
+    "comm_positions_short_all": "2409",
+    "noncomm_positions_long_all": "30214",
+    "noncomm_positions_short_all": "30343",
+    "nonrept_positions_long_all": "1336",
+    "nonrept_positions_short_all": "1061"
+  },
+  "previous_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-17T00:00:00.000",
+    "comm_positions_long_all": "1720",
+    "comm_positions_short_all": "2203",
+    "noncomm_positions_long_all": "33073",
+    "noncomm_positions_short_all": "32902",
+    "nonrept_positions_long_all": "1639",
+    "nonrept_positions_short_all": "1327"
+  }
+},
+{
+  "display_name": "Ethereum",
+  "instrument_name": "ETHUSDT",
+  "market_and_exchange_names": "ETHER CASH SETTLED - CHICAGO MERCANTILE EXCHANGE",
+  "asset_type": "crypto",
+  "exchange": "binance",
+  "searchable_terms": [
+    "ETH",
+    "Ethereum",
+    "ETHUSDT",
+    "Crypto"
+  ],
+  "latest_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-24T00:00:00.000",
+    "comm_positions_long_all": "824",
+    "comm_positions_short_all": "928",
+    "noncomm_positions_long_all": "16247",
+    "noncomm_positions_short_all": "16557",
+    "nonrept_positions_long_all": "829",
+    "nonrept_positions_short_all": "415"
+  },
+  "previous_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-17T00:00:00.000",
+    "comm_positions_long_all": "632",
+    "comm_positions_short_all": "1184",
+    "noncomm_positions_long_all": "18137",
+    "noncomm_positions_short_all": "18183",
+    "nonrept_positions_long_all": "1026",
+    "nonrept_positions_short_all": "428"
+  }
+},
+{
+  "display_name": "Micro Bitcoin",
+  "instrument_name": "BTCUSDT",
+  "market_and_exchange_names": "MICRO BITCOIN - CHICAGO MERCANTILE EXCHANGE",
+  "asset_type": "crypto",
+  "exchange": "binance",
+  "searchable_terms": [
+    "BTC",
+    "Bitcoin",
+    "Micro",
+    "BTCUSDT",
+    "Crypto"
+  ],
+  "latest_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-24T00:00:00.000",
+    "comm_positions_long_all": "152",
+    "comm_positions_short_all": "0",
+    "noncomm_positions_long_all": "69667",
+    "noncomm_positions_short_all": "73625",
+    "nonrept_positions_long_all": "5903",
+    "nonrept_positions_short_all": "2097"
+  },
+  "previous_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-17T00:00:00.000",
+    "comm_positions_long_all": "400",
+    "comm_positions_short_all": "0",
+    "noncomm_positions_long_all": "47366",
+    "noncomm_positions_short_all": "51786",
+    "nonrept_positions_long_all": "6701",
+    "nonrept_positions_short_all": "2681"
+  }
+},
+{
+  "display_name": "Micro Ethereum",
+  "instrument_name": "ETHUSDT",
+  "market_and_exchange_names": "MICRO ETHER - CHICAGO MERCANTILE EXCHANGE",
+  "asset_type": "crypto",
+  "exchange": "binance",
+  "searchable_terms": [
+    "ETH",
+    "Ethereum",
+    "Micro",
+    "ETHUSDT",
+    "Crypto"
+  ],
+  "latest_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-24T00:00:00.000",
+    "comm_positions_long_all": "1250",
+    "comm_positions_short_all": "0",
+    "noncomm_positions_long_all": "211438",
+    "noncomm_positions_short_all": "214822",
+    "nonrept_positions_long_all": "2492",
+    "nonrept_positions_short_all": "358"
+  },
+  "previous_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-17T00:00:00.000",
+    "comm_positions_long_all": "1250",
+    "comm_positions_short_all": "0",
+    "noncomm_positions_long_all": "188412",
+    "noncomm_positions_short_all": "192615",
+    "nonrept_positions_long_all": "3304",
+    "nonrept_positions_short_all": "351"
+  }
+},
+{
+  "display_name": "Nano Ethereum",
+  "instrument_name": "ETHUSDT",
+  "market_and_exchange_names": "NANO ETHER - LMX LABS LLC",
+  "asset_type": "crypto",
+  "exchange": "binance",
+  "searchable_terms": [
+    "ETH",
+    "Ethereum",
+    "Nano",
+    "ETHUSDT",
+    "Crypto"
+  ],
+  "latest_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-24T00:00:00.000",
+    "comm_positions_long_all": "246",
+    "comm_positions_short_all": "50",
+    "noncomm_positions_long_all": "67085",
+    "noncomm_positions_short_all": "72022",
+    "nonrept_positions_long_all": "5177",
+    "nonrept_positions_short_all": "436"
+  },
+  "previous_report": {
+    "report_date_as_yyyy_mm_dd": "2024-12-17T00:00:00.000",
+    "comm_positions_long_all": "153",
+    "comm_positions_short_all": "25",
+    "noncomm_positions_long_all": "77019",
+    "noncomm_positions_short_all": "82144",
+    "nonrept_positions_long_all": "5529",
+    "nonrept_positions_short_all": "532"
+  }
+}
+]

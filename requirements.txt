@@ -1,0 +1,9 @@
+streamlit>=1.29.0
+pandas>=2.0.0
+streamlit-shadcn-ui>=0.1.7
+streamlit-scroll-navigation>=0.1.0
+python-dotenv>=1.0.0
+altair>=5.0.0
+streamlit-lottie>=0.0.5
+requests>=2.31.0
+firebase-admin>=6.3.0

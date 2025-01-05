@@ -1,0 +1,46 @@
+[theme]
+# Primary accent color for interactive elements
+primaryColor = "#000000"
+
+# Background color for the main content area
+backgroundColor = "#000000"
+
+# Background color used for the sidebar and most interactive widgets
+secondaryBackgroundColor = "#1a1a1a"
+
+# Color used for almost all text
+textColor = "#FFFFFF"
+
+# Font family for all text in the app, except code blocks
+font = "CustomFont"
+
+[server]
+enableStaticServing = true
+
+[client]
+# Custom CSS for fonts
+customCSS = """
+    @font-face {
+        font-family: 'CustomFont';
+        src: url('fonts/Inter-Light.ttf') format('truetype');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'CustomFont';
+        src: url('fonts/Inter-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'CustomFont';
+        src: url('fonts/Inter-ExtraBold.ttf') format('truetype');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+    }
+""" 
