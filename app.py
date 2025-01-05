@@ -7,22 +7,6 @@ import json
 import pandas as pd
 import time
 import altair as alt
-import pathlib
-
-# Setup static file serving
-STATIC_DIR = pathlib.Path(__file__).parent / "static"
-if not STATIC_DIR.exists():
-    STATIC_DIR.mkdir(parents=True)
-
-# Copy fonts to static directory if they don't exist
-FONTS_DIR = STATIC_DIR / "fonts"
-if not FONTS_DIR.exists():
-    FONTS_DIR.mkdir(parents=True)
-    # Copy font files from source to static/fonts directory
-    import shutil
-    source_fonts = pathlib.Path(__file__).parent / "fonts"
-    for font_file in source_fonts.glob("*.ttf"):
-        shutil.copy2(font_file, FONTS_DIR / font_file.name)
 
 # Get the absolute path to the root directory
 ROOT_DIR = Path(__file__).parent.absolute()
@@ -46,112 +30,231 @@ st.set_page_config(
 # Apply clean monochromatic theme
 st.markdown("""
 <style>
-    /* Base theme and other styles... */
+    /* Hide Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     
-    /* Responsive Typography */
+    /* Base theme */
     :root {
-        --font-size-base: 16px;
-        --font-size-scale: 1.2;
-        --spacing-unit: 1rem;
+        --background: 0 0% 0%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3%;
+        --muted: 0 0% 7%;
+        --border: 0 0% 14.9%;
+    }
+
+    /* Clean background */
+    .stApp {
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
     }
     
-    /* Update font references to use the configured CustomFont */
-    body, input, button, select, textarea {
-        font-family: CustomFont, -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Remove default container styling */
+    .element-container {
+        background: transparent !important;
     }
     
-    /* Rest of your existing styles... */
-    
-    /* Ko-fi Widget Styling */
-    #kofi-widget-container,
-    #kofi-widget-container-sidebar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 1rem 0;
+    /* Clean metric cards */
+    [data-testid="stMetricValue"] {
+        color: hsl(var(--foreground));
+        background: transparent !important;
     }
     
-    /* Ko-fi Button Styling */
-    .kofi-button {
-        background-color: #000000 !important;
-        border: 1px solid #333 !important;
-        color: #FFFFFF !important;
-        padding: 8px 16px !important;
-        border-radius: 4px !important;
-        transition: all 0.3s ease !important;
+    [data-testid="stMetricDelta"] {
+        color: hsl(var(--muted-foreground));
     }
     
-    .kofi-button:hover {
-        background-color: #333333 !important;
-        transform: translateY(-2px) !important;
+    /* Remove multiple borders */
+    [data-testid="stVerticalBlock"] > div {
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0.5rem !important;
     }
     
-    /* Bottom Section Styling */
-    .contact-form input,
-    .contact-form textarea {
-        background-color: #1a1a1a;
-        color: white;
-        border: 1px solid #333;
-        padding: 0.8rem;
+    /* Clean selectbox */
+    .stSelectbox > div > div {
+        background-color: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+    }
+    
+    /* Clean table */
+    .dataframe {
+        background: hsl(var(--card));
+        border: none !important;
+    }
+    
+    /* Clean chart */
+    .stChart > div > div > div {
+        background-color: transparent !important;
+    }
+    
+    /* Remove markdown container styling */
+    .stMarkdown {
+        background: transparent !important;
+    }
+    
+    .element-container div {
+        background: transparent !important;
+    }
+    
+    /* Clean tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: transparent;
+        gap: 1rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: hsl(var(--card));
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: hsl(var(--muted));
+    }
+    
+    /* Remove any remaining container borders */
+    div[data-testid*="stVerticalBlock"] div[data-testid*="stVerticalBlock"] {
+        border: none !important;
+        background: transparent !important;
+    }
+    
+    /* Remove space above title */
+    .stApp > header {
+        display: none;
+    }
+    
+    .main-title {
+        margin-top: -4rem;  /* Negative margin to remove space */
+        padding-bottom: 1rem;
+    }
+    
+    /* Custom toggle container */
+    .toggle-container {
+        background-color: #000000;
+        padding: 1rem;
         border-radius: 4px;
-        font-size: var(--font-size-base);
-        width: 100%;
-        box-sizing: border-box;
         margin-bottom: 1rem;
     }
     
-    .contact-form input:focus,
-    .contact-form textarea:focus {
-        border-color: #666;
-        outline: none;
+    /* Larger toggle and label */
+    .toggle-container label {
+        font-size: 1.2rem !important;
+        color: #FFFFFF !important;
     }
     
-    /* Separator Styling */
-    hr {
-        margin: 4rem 0;
-        border: none;
-        border-top: 1px solid #333;
-        opacity: 0.5;
+    /* Make toggle bigger */
+    [data-testid="stSwitch"] {
+        transform: scale(1.2);
+        margin: 0.5rem 0;
     }
     
-    /* Bottom Container Spacing */
-    .container-sm {
-        padding: 2rem 1rem;
+    /* Active Trader card styling */
+    [data-testid="stVerticalBlock"] > div:has([data-testid="metric-container"]) {
+        background-color: #000000 !important;
+        border: none !important;
+        padding: 1rem !important;
     }
     
-    @media screen and (max-width: 640px) {
-        .container-sm {
-            padding: 1rem;
-        }
+    /* Metric text colors */
+    [data-testid="metric-container"] {
+        color: #FFFFFF !important;
     }
     
-    /* Updated Input Styling */
-    .input-group {
-        margin-bottom: 1.5rem;
-        width: 100%;
+    [data-testid="metric-container"] label {
+        color: #FFFFFF !important;
     }
     
-    .input-group input {
+    /* Style for the inner selector */
+    div[data-testid="stSelectbox"] {
+        margin-bottom: 1rem;
+    }
+    
+    .footer {
+        position: relative;
+        padding: 2rem 0;
+        margin-top: 2rem;
+        background: #1e1e1e;
+        text-align: center;
+    }
+    
+    .coffee-message {
+        color: white;
+        font-size: 1.2em;
+        margin: 1em 0;
+    }
+    
+    .kofi-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000000;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        border: 1px solid #333;
         transition: all 0.3s ease;
     }
     
-    .input-group input:focus {
-        border-color: #666 !important;
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    .kofi-button:hover {
+        background-color: #333;
     }
     
-    .input-group input::placeholder {
-        color: #666;
-        opacity: 1;
+    .coffee-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
     }
     
-    /* Remove old contact form styles */
-    .contact-form {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 0 1rem;
+    /* Style for close button */
+    [data-testid="stButton"] button {
+        background: transparent;
+        color: #FFFFFF;
+        border: none;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0.5em;
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stButton"] button:hover {
+        color: #ff4b4b;
+        transform: scale(1.1);
+    }
+    
+    /* Professional Header Styles */
+    h1 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Slogan Style */
+    .slogan {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 400;
+        opacity: 0.8;
+    }
+    
+    /* Support Button Container */
+    .support-buttons {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+        transition: all 0.3s ease;
+    }
+    
+    .support-buttons:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Separator Style */
+    hr {
+        opacity: 0.1;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -224,12 +327,16 @@ def main():
     with center_col:
         # Header Section with Logo and Branding
         st.markdown("""
-        <div id='cot-analytics' class='responsive-padding container-md' style='text-align: center; margin: 0 auto;'>
-            <h1 class='text-h1' style='color: white;'>CoT Analytics</h1>
-            <p class='text-body' style='color: #666;'>Find Your Edge With Institutional & Commercial Data</p>
+        <div style='text-align: center; padding: 2rem 0;'>
+            <h1 style='color: white; font-size: 2.5em; margin-bottom: 0.5rem;'>CoT Analytics</h1>
+            <p style='color: #666; font-size: 1.2em; margin-bottom: 2rem;'>Professional-Grade Market Positioning Analysis</p>
         </div>
         """, unsafe_allow_html=True)
         
+        # Add separator
+        st.markdown("<hr style='margin: 2rem 0; border: none; border-top: 1px solid #333;'>", unsafe_allow_html=True)
+        
+        # Existing data loading code and main functionality
         try:
             data = load_mock_data()
             if not isinstance(data, list):
@@ -248,6 +355,10 @@ def main():
                 options=market_options,
                 key="selected_market"
             )
+            
+            # Remove scroll behavior tracking since we don't have navigation
+            if 'prev_market' not in st.session_state:
+                st.session_state.prev_market = selected_market
             
             # Get selected market data and calculate metrics
             selected_market_data = next(
@@ -271,6 +382,25 @@ def main():
                     default_checked=False,
                     key="view_mode_toggle"
                 )
+                
+                # Add scroll behavior for toggle
+                if 'prev_view_state' not in st.session_state:
+                    st.session_state.prev_view_state = absolute_view
+                elif st.session_state.prev_view_state != absolute_view:
+                    st.markdown(
+                        """
+                        <script>
+                            setTimeout(() => {
+                                const element = document.getElementById('market');
+                                if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }, 100);
+                        </script>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                    st.session_state.prev_view_state = absolute_view
             
             # Table below Active Trader
             df = pd.DataFrame(positions).transpose()
@@ -291,14 +421,14 @@ def main():
                     }
                 ).background_gradient(
                     subset=['Net'], 
-                    cmap='gist_yarg',
+                    cmap='gist_yarg',  # 'gist_yarg' is 'gray' reversed
                     vmin=df['Net'].min(),
                     vmax=df['Net'].max()
                 ),
                 use_container_width=True
             )
             
-            # Prepare and create chart
+            # Chart configuration and display
             chart_data = prepare_chart_data(positions)
             colors = ['#FFFFFF', '#666666']
             
@@ -326,9 +456,9 @@ def main():
                             "title": None,
                             "labelColor": "#FFFFFF"
                         },
-                        "sort": ["Long", "Short"]
+                        "sort": ["Long", "Short"]  # Changed order to make Long appear at bottom
                     },
-                    "order": {"field": "Position", "sort": "ascending"},
+                    "order": {"field": "Position", "sort": "ascending"},  # Changed to ascending
                     "tooltip": [
                         {"field": "Trader", "type": "nominal", "title": "Trader Type"},
                         {"field": "Position", "type": "nominal"},
@@ -347,7 +477,7 @@ def main():
                 }
             }
             
-            if not absolute_view:
+            if not absolute_view:  # Normalized view
                 base["encoding"]["y"] = {
                     "field": "Value",
                     "type": "quantitative",
@@ -360,7 +490,7 @@ def main():
                     },
                     "scale": {"domain": [0, 1]}
                 }
-            else:
+            else:  # Absolute view
                 base["encoding"]["y"] = {
                     "field": "Value",
                     "type": "quantitative",
@@ -373,7 +503,7 @@ def main():
                     }
                 }
             
-            # Create chart
+            # Create and configure the chart
             chart = st.vega_lite_chart(
                 chart_data,
                 base,
@@ -389,95 +519,51 @@ def main():
                 unsafe_allow_html=True
             )
             
-            # Add separator before support section
-            st.markdown("<hr style='margin: 4rem 0; border: none; border-top: 1px solid #333;'>", unsafe_allow_html=True)
+            # Bottom section with feature requests and support
+            st.markdown("<hr style='margin: 2rem 0; border: none; border-top: 1px solid #333;'>", unsafe_allow_html=True)
+            
+            # Promise text instead of Feature Requests header
+            st.markdown("""
+            <div style='text-align: center; margin-bottom: 1.5rem;'>
+                <p style='color: #4CAF50; font-size: 1.2em;'>I will build and deploy your ideas in 2 days.</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Input fields
+            col1, col2 = st.columns(2)
+            with col1:
+                feature_request = st.text_input("Suggest a Feature", key="feature_request")
+            with col2:
+                contact_email = st.text_input("Your Email (optional)", key="contact_email")
             
             # Support section at the bottom
             st.markdown(
                 """
-                <div class='container-sm responsive-padding' style='margin: 0 auto; text-align: center;'>
-                    <h2 class='text-h2' style='
-                        font-family: CustomFont, sans-serif;
-                        font-weight: 800;
-                        color: white;
-                        margin-bottom: 2rem;
-                    '>
-                        I'll build and ship your ideas<br>in 2 days
-                    </h2>
-                    <div style='display: flex; flex-direction: column; align-items: center; gap: var(--spacing-unit);'>
-                        <!-- Ko-fi Widget -->
-                        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-                        <script type='text/javascript'>
-                            kofiwidget2.init('Support me on Ko-fi', '#ffffff', 'Q5Q818G1MT');
-                            kofiwidget2.draw();
-                        </script>
-                        <div id="kofi-widget-container"></div>
-                        <p class='text-small' style='
-                            font-family: CustomFont, sans-serif;
-                            font-weight: 300;
-                            color: #666;
-                            text-align: center;
-                            margin-bottom: 2rem;
-                        '>
-                            All contributions go directly into our projects.
-                        </p>
-                        
-                        <!-- New Input Fields -->
-                        <div class='contact-form' style='width: 100%; max-width: 400px; margin: 0 auto;'>
-                            <div class='input-group'>
-                                <input type="email" 
-                                       placeholder="Enter your email" 
-                                       style='
-                                           width: 100%;
-                                           margin-bottom: 1rem;
-                                           background: #1a1a1a;
-                                           border: 1px solid #333;
-                                           color: white;
-                                           padding: 12px;
-                                           border-radius: 4px;
-                                           font-size: 14px;
-                                       '
-                                >
-                            </div>
-                            <div class='input-group'>
-                                <input type="text" 
-                                       placeholder="What would you like me to build?" 
-                                       style='
-                                           width: 100%;
-                                           background: #1a1a1a;
-                                           border: 1px solid #333;
-                                           color: white;
-                                           padding: 12px;
-                                           border-radius: 4px;
-                                           font-size: 14px;
-                                       '
-                                >
-                            </div>
-                        </div>
-                    </div>
+                <div style='display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 2rem 0;'>
+                    <a href='https://ko-fi.com/X7X47Q0EG' target='_blank'>
+                        <img height='36' style='border:0px;height:36px;' 
+                        src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' 
+                        border='0' alt='Buy Me a Coffee at ko-fi.com' />
+                    </a>
+                    <p style='color: #666; font-size: 0.9em; text-align: center; margin-top: 0.5rem;'>
+                        All contributions go directly to my public projects.
+                    </p>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
-            
+
         except Exception as e:
             st.error(f"Error loading data: {e}")
             return
     
-    # Force initial scroll to cot-analytics section
+    # Force initial scroll to market section
     if 'initial_load' not in st.session_state:
         st.session_state.initial_load = True
         st.markdown(
             """
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    window.location.hash = 'cot-analytics';
-                });
-                
-                // Fallback for Streamlit's dynamic loading
-                setTimeout(function() {
-                    window.location.hash = 'cot-analytics';
-                }, 1000);
+                window.location.hash = '#market';
             </script>
             """,
             unsafe_allow_html=True
