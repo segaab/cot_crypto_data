@@ -325,42 +325,41 @@ def main():
     _, center_col, _ = st.columns([1, 2, 1])
     
     with center_col:
-        # Header Section with Logo and Branding
+        # Header Section with Logo and Branding - reduced padding
         st.markdown("""
-        <div style='text-align: center; padding: 2rem 0;'>
-            <h1 style='color: white; font-size: 2.5em; margin-bottom: 0.5rem;'>CoT Analytics</h1>
-            <p style='color: #666; font-size: 1.2em; margin-bottom: 2rem;'>Professional-Grade Market Positioning Analysis</p>
+        <div style='text-align: center; padding: 1rem 0 0.5rem 0;'>
+            <h1 style='color: white; font-size: 2.5em; margin-bottom: 0.25rem;'>CoT Analytics</h1>
+            <p style='color: #666; font-size: 1.2em; margin-bottom: 1rem;'>Professional-Grade Market Positioning Analysis</p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Add separator
-        st.markdown("<hr style='margin: 2rem 0; border: none; border-top: 1px solid #333;'>", unsafe_allow_html=True)
+        # Thinner separator
+        st.markdown("<hr style='margin: 0.5rem 0; border: none; border-top: 1px solid #333;'>", unsafe_allow_html=True)
         
-        # Existing data loading code and main functionality
         try:
             data = load_mock_data()
             if not isinstance(data, list):
                 st.error("Invalid data format. Expected a list of market data.")
                 return
-                
-            # Extract display names for market selection
+            
+            # Market selector with reduced padding
             market_options = [m.get('display_name') for m in data if isinstance(m, dict) and 'display_name' in m]
             if not market_options:
                 st.error("No valid market options found in data.")
                 return
-                
-            # Main market selector
+            
+            # Compact market selector
             selected_market = st.selectbox(
                 "Select Market",
                 options=market_options,
-                key="selected_market"
+                key="selected_market",
+                label_visibility="collapsed"  # Hides label to reduce space
             )
             
-            # Remove scroll behavior tracking since we don't have navigation
             if 'prev_market' not in st.session_state:
                 st.session_state.prev_market = selected_market
             
-            # Get selected market data and calculate metrics
+            # Metrics section with minimal spacing
             selected_market_data = next(
                 (m for m in data if m['display_name'] == selected_market),
                 data[0]
@@ -368,7 +367,7 @@ def main():
             positions = format_positions_data(selected_market_data)
             metrics = calculate_key_metrics(selected_market_data)
             
-            # Main metric with Humble View toggle
+            # Compact metric layout
             col1, col2 = st.columns([6, 1])
             with col1:
                 metric_card(
@@ -382,53 +381,30 @@ def main():
                     default_checked=False,
                     key="view_mode_toggle"
                 )
-                
-                # Add scroll behavior for toggle
-                if 'prev_view_state' not in st.session_state:
-                    st.session_state.prev_view_state = absolute_view
-                elif st.session_state.prev_view_state != absolute_view:
-                    st.markdown(
-                        """
-                        <script>
-                            setTimeout(() => {
-                                const element = document.getElementById('market');
-                                if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }, 100);
-                        </script>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                    st.session_state.prev_view_state = absolute_view
             
-            # Table below Active Trader
+            # Compact table
             df = pd.DataFrame(positions).transpose()
-            
-            # Normalize the data if not in absolute view
             if not absolute_view:
                 for col in ['Long', 'Short', 'Net']:
                     total = df[col].abs().sum()
                     df[col] = df[col] / total * 100
             
-            # Format the display
             st.dataframe(
-                df.style.format(
-                    {
-                        'Long': '{:.1f}%' if not absolute_view else '{:,.0f}',
-                        'Short': '{:.1f}%' if not absolute_view else '{:,.0f}',
-                        'Net': '{:.1f}%' if not absolute_view else '{:,.0f}'
-                    }
-                ).background_gradient(
-                    subset=['Net'], 
-                    cmap='gist_yarg',  # 'gist_yarg' is 'gray' reversed
+                df.style.format({
+                    'Long': '{:.1f}%' if not absolute_view else '{:,.0f}',
+                    'Short': '{:.1f}%' if not absolute_view else '{:,.0f}',
+                    'Net': '{:.1f}%' if not absolute_view else '{:,.0f}'
+                }).background_gradient(
+                    subset=['Net'],
+                    cmap='gist_yarg',
                     vmin=df['Net'].min(),
                     vmax=df['Net'].max()
                 ),
-                use_container_width=True
+                use_container_width=True,
+                height=120  # Reduced height
             )
             
-            # Chart configuration and display
+            # Chart with minimal padding
             chart_data = prepare_chart_data(positions)
             colors = ['#FFFFFF', '#666666']
             
